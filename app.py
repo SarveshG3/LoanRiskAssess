@@ -1,6 +1,6 @@
 from flask import Flask, jsonify,  Response, send_file, request
 import json
-import Loan_Risk_Assessment_Notebook as lrs
+import fetchRiskScore as lrs
 
 app = Flask(__name__)
 
