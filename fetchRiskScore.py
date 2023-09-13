@@ -10,13 +10,15 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import MinMaxScaler
 import pickle
 import re
+import warnings
+warnings.filterwarnings("ignore")
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 loaded_model = None
 
 def prepare_data(data):
-    data
+# required fields - {'person_age', 'person_home_ownership', 'loan_amnt', 'person_income', 'cb_person_cred_hist_length', 'loan_intent', 'person_emp_length', 'cb_person_default_on_file', 'credit_score', 'late_payments', 'loan_percent_income'}
     df = pd.json_normalize(data)
     #df.drop('appID', axis=1, inplace=True)
     df.drop('serial', axis=1, inplace=True)
@@ -65,11 +67,11 @@ def send_to_powerApps(score_data):
 def prepare_send_result(json_data):
     global loaded_model
     out={1:"Reject", 0:"Approve", 2: "Underwriting"}
-    data = json.loads(json_data)
+    data = json_data
     print('--------------------------Request--------------------------')
     print(data)
     model_df = prepare_data(data)
-    with open(r"/content/sample_data/best_pipeline.pkl", 'rb') as file:
+    with open('best_pipeline.pkl', 'rb') as file:
         loaded_model = joblib.load(file)
     #print(model_df)
     model_df['prediction'] = loaded_model.predict(model_df)
@@ -81,17 +83,19 @@ def prepare_send_result(json_data):
     #returnString = relevant_results.to_json(orient='records')
     #res = send_to_powerApps(json.dumps({'appID': model_df['appID'], 'score': returnString}))
     #print(json.dumps(res))
+    print('--------------------------Response--------------------------')
+    print(returnString)
     return returnString
 
 def handle_request(req_data):
-    #prepare_send_result(req_data)
-    threading.Thread(target=prepare_send_result, args=(req_data), name="predict_result",
-                    daemon=True).start()
+    prepare_send_result(req_data)
+    #threading.Thread(target=prepare_send_result, args=(req_data), name="predict_result",
+    #                daemon=True).start()
     return "Data received successfully"
 
-if __name__ == '__main__':
-    #print('Main Started...')
-    response = prepare_send_result(input_json)
-    print('--------------------------Response--------------------------')
-    print(response)
+#if __name__ == '__main__':
+#    print('Main Started...')
+#    response = prepare_send_result(input_json)
+#    print('--------------------------Response--------------------------')
+#    print(response)
 

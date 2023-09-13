@@ -13,6 +13,7 @@ def hello():
 
 @app.route('/fetch_score/', methods=['GET', 'POST'])
 def fetch_trials():
+    print('-----------POST Request Received-----------')
     request_data = request.get_json(force=True)
     status = lrs.handle_request(request_data)
     return json.dumps(status)
