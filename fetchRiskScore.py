@@ -88,9 +88,9 @@ def prepare_send_result(json_data):
     return returnString
 
 def handle_request(req_data):
-    prepare_send_result(req_data)
-    #threading.Thread(target=prepare_send_result, args=(req_data), name="predict_result",
-    #                daemon=True).start()
+    #prepare_send_result(req_data)
+    threading.Thread(target=prepare_send_result, args=(req_data,), name="predict_result",
+                    daemon=True).start()
     return "Data received successfully"
 
 #if __name__ == '__main__':
