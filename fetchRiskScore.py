@@ -20,18 +20,18 @@ loaded_model = None
 def prepare_data(data):
 # required fields - {'person_age', 'person_home_ownership', 'loan_amnt', 'person_income', 'cb_person_cred_hist_length', 'loan_intent', 'person_emp_length', 'cb_person_default_on_file', 'credit_score', 'late_payments', 'loan_percent_income'}
     df = pd.json_normalize(data)
-    #df.drop('appID', axis=1, inplace=True)
-    df.drop('serial', axis=1, inplace=True)
-    df.drop('name', axis=1, inplace=True)
-    df.drop('address', axis=1, inplace=True)
-    df.drop('SSN', axis=1, inplace=True)
-    df.drop('Score', axis=1, inplace=True)
-    df.drop('phone', axis=1, inplace=True)
-    df.drop('Existing Loan?',axis=1,inplace=True)
-    df.drop('Existing Loan Outstanding Amount ', axis=1, inplace=True)
-    df.drop('loan_int_rate',axis=1,inplace=True)
-    df.drop('loan_grade', axis=1, inplace=True)
-    df.drop('loan_status', axis=1, inplace=True)
+    df.drop('appID', axis=1, inplace=True)
+    #df.drop('serial', axis=1, inplace=True)
+    #df.drop('name', axis=1, inplace=True)
+    #df.drop('address', axis=1, inplace=True)
+    #df.drop('SSN', axis=1, inplace=True)
+    #df.drop('Score', axis=1, inplace=True)
+    #df.drop('phone', axis=1, inplace=True)
+    #df.drop('Existing Loan?',axis=1,inplace=True)
+    #df.drop('Existing Loan Outstanding Amount ', axis=1, inplace=True)
+    #df.drop('loan_int_rate',axis=1,inplace=True)
+    #df.drop('loan_grade', axis=1, inplace=True)
+    #df.drop('loan_status', axis=1, inplace=True)
     return df
 
 def predict(row):
