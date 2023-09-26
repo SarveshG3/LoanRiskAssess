@@ -20,6 +20,8 @@ loaded_model = None
 def prepare_data(data):
 # required fields - {'person_age', 'person_home_ownership', 'loan_amnt', 'person_income', 'cb_person_cred_hist_length', 'loan_intent', 'person_emp_length', 'cb_person_default_on_file', 'credit_score', 'late_payments', 'loan_percent_income'}
     df = pd.json_normalize(data)
+    global appID
+    appID = data['appID']
     df.drop('appID', axis=1, inplace=True)
     #df.drop('serial', axis=1, inplace=True)
     #df.drop('name', axis=1, inplace=True)
@@ -77,6 +79,7 @@ def prepare_send_result(json_data):
     model_df['prediction'] = loaded_model.predict(model_df)
     model_df['loan_status'] = out[model_df['prediction'][0]]
     #print(model_df['riskScore'])
+    model_df['appID'] = appID
     model_df.reset_index(inplace=True)
     returnString = model_df.to_json(orient='records')
     #relevant_results = model_df[['appID', 'loan_status']]
@@ -88,10 +91,10 @@ def prepare_send_result(json_data):
     return returnString
 
 def handle_request(req_data):
-    #prepare_send_result(req_data)
-    threading.Thread(target=prepare_send_result, args=(req_data,), name="predict_result",
-                    daemon=True).start()
-    return "Data received successfully"
+    status = prepare_send_result(req_data)
+    #threading.Thread(target=prepare_send_result, args=(req_data,), name="predict_result",
+    #                daemon=True).start()
+    return status
 
 #if __name__ == '__main__':
 #    print('Main Started...')
