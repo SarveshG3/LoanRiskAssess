@@ -78,17 +78,18 @@ def prepare_send_result(json_data):
     #print(model_df)
     model_df['prediction'] = loaded_model.predict(model_df)
     model_df['loan_status'] = out[model_df['prediction'][0]]
-    #print(model_df['riskScore'])
+    print('***Loan Status***')    
+    print(model_df['loan_status'][0])
     model_df['appID'] = appID
     model_df.reset_index(inplace=True)
-    returnString = model_df.to_json(orient='records')
+    #returnString = model_df.to_json(orient='records')
     #relevant_results = model_df[['appID', 'loan_status']]
     #returnString = relevant_results.to_json(orient='records')
-    #res = send_to_powerApps(json.dumps({'appID': model_df['appID'], 'score': returnString}))
+    res = json.dumps({'appID': model_df['appID'][0], 'status': model_df['loan_status'][0]})
     #print(json.dumps(res))
     print('--------------------------Response--------------------------')
-    print(returnString)
-    return returnString
+    print(res)
+    return res
 
 def handle_request(req_data):
     status = prepare_send_result(req_data)
